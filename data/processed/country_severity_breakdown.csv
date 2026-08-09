@@ -1,0 +1,290 @@
+Country_Name,severity,count
+Antigua and Barbuda,Low,2
+Antigua and Barbuda,Moderate,2
+Antigua and Barbuda,None,2
+Australia,Low,1398
+Australia,Moderate,364
+Australia,None,477
+Australia,Severe,384
+Bahamas,Low,292
+Bahamas,Moderate,95
+Bahamas,None,258
+Bahamas,Severe,34
+Bahrain,Moderate,1
+Bahrain,Severe,11
+Bangladesh,Low,4
+Barbados,Low,19
+Barbados,Moderate,17
+Barbados,None,18
+Barbados,Severe,9
+Belize,Low,420
+Belize,Moderate,102
+Belize,None,212
+Belize,Severe,44
+Bermuda,Low,36
+Bermuda,Moderate,4
+Bermuda,Severe,2
+Brazil,Low,112
+Brazil,Moderate,32
+Brazil,None,156
+Brazil,Severe,13
+Brunei,Low,22
+Brunei,Moderate,2
+Brunei,None,83
+Cambodia,Low,52
+Cambodia,Moderate,14
+Cambodia,None,132
+Cambodia,Severe,13
+Cayman Islands,Low,33
+Cayman Islands,Moderate,3
+Cayman Islands,Severe,4
+Chile,Moderate,1
+Chile,Severe,2
+China,Low,108
+China,Moderate,10
+China,None,537
+Colombia,Low,150
+Colombia,Moderate,36
+Colombia,None,8
+Colombia,Severe,20
+Commonwealth of the Northern Mariana Islands,Low,4
+Commonwealth of the Northern Mariana Islands,Moderate,33
+Commonwealth of the Northern Mariana Islands,None,2
+Commonwealth of the Northern Mariana Islands,Severe,2
+Comoro Islands,Severe,2
+Cook Islands,Low,28
+Cook Islands,Moderate,2
+Cook Islands,None,10
+Cook Islands,Severe,1
+Costa Rica,Low,15
+Costa Rica,Moderate,11
+Costa Rica,None,9
+Costa Rica,Severe,3
+Cuba,Low,323
+Cuba,Moderate,43
+Cuba,None,416
+Cuba,Severe,26
+Djibouti,Low,24
+Djibouti,None,28
+Dominica,Low,14
+Dominica,Moderate,18
+Dominica,None,53
+Dominica,Severe,19
+Dominican Republic,Low,133
+Dominican Republic,Moderate,25
+Dominican Republic,None,150
+Dominican Republic,Severe,17
+East Timor,Low,18
+East Timor,None,16
+Ecuador,Low,1
+Ecuador,Moderate,8
+Ecuador,Severe,21
+Egypt,Low,72
+Egypt,Moderate,6
+Egypt,None,861
+Eritrea,Moderate,2
+Federated States of Micronesia,Low,5
+Federated States of Micronesia,Moderate,3
+Federated States of Micronesia,None,138
+Fiji,Low,255
+Fiji,Moderate,56
+Fiji,None,697
+Fiji,Severe,51
+France,Low,119
+France,Moderate,24
+France,None,460
+France,Severe,18
+French Polynesia,Low,288
+French Polynesia,Moderate,65
+French Polynesia,None,1000
+French Polynesia,Severe,41
+Grenada,Low,30
+Grenada,Moderate,6
+Grenada,None,38
+Guatemala,Low,4
+Guatemala,Moderate,2
+Guatemala,None,2
+Haiti,Low,10
+Haiti,Moderate,2
+Haiti,None,158
+Haiti,Severe,1
+Honduras,Low,191
+Honduras,Moderate,24
+Honduras,None,256
+Honduras,Severe,5
+India,Low,5
+India,Moderate,13
+India,Severe,54
+Indonesia,Low,410
+Indonesia,Moderate,113
+Indonesia,None,1202
+Indonesia,Severe,72
+Iran,Low,16
+Iran,None,16
+Iran,Severe,1
+Israel,Severe,1
+Jamaica,Low,539
+Jamaica,Moderate,83
+Jamaica,None,415
+Jamaica,Severe,40
+Japan,Low,113
+Japan,Moderate,182
+Japan,None,591
+Japan,Severe,100
+Jordan,Low,8
+Jordan,None,4
+Kenya,Low,38
+Kenya,Moderate,26
+Kenya,None,4
+Kenya,Severe,21
+Kiribati,None,4
+Kiribati,Severe,7
+Kuwait,Low,4
+Kuwait,Moderate,1
+Kuwait,Severe,1
+Madagascar,Low,35
+Madagascar,Moderate,33
+Madagascar,None,48
+Madagascar,Severe,44
+Malaysia,Low,926
+Malaysia,Moderate,188
+Malaysia,None,3087
+Malaysia,Severe,39
+Maldives,Low,321
+Maldives,Moderate,30
+Maldives,None,241
+Maldives,Severe,20
+Marshall Islands,Low,12
+Marshall Islands,None,16
+Marshall Islands,Severe,6
+Martinique,Low,8
+Martinique,Moderate,10
+Martinique,None,2
+Martinique,Severe,4
+Mauritius,Low,9
+Mauritius,Moderate,33
+Mauritius,None,4
+Mauritius,Severe,13
+Mexico,Low,740
+Mexico,Moderate,822
+Mexico,None,148
+Mexico,Severe,358
+Montserrat,Low,6
+Montserrat,None,18
+Mozambique,Low,13
+Mozambique,Moderate,7
+Mozambique,None,2
+Mozambique,Severe,4
+Myanmar,Low,6
+Myanmar,None,46
+Netherlands Antilles,Low,152
+Netherlands Antilles,Moderate,115
+Netherlands Antilles,None,285
+Netherlands Antilles,Severe,18
+New Caledonia,Low,20
+New Caledonia,None,381
+Nicaragua,Low,8
+Oman,Low,93
+Oman,Moderate,3
+Oman,None,191
+Oman,Severe,2
+Palau,Low,2
+Palau,Moderate,1
+Palau,None,22
+Palau,Severe,3
+Panama,Low,226
+Panama,Moderate,33
+Panama,None,74
+Panama,Severe,14
+Papua New Guinea,Low,47
+Papua New Guinea,Moderate,6
+Papua New Guinea,None,56
+Papua New Guinea,Severe,8
+Philippines,Low,591
+Philippines,Moderate,96
+Philippines,None,1019
+Philippines,Severe,28
+Saint Kitts and Nevis,Moderate,2
+Saint Kitts and Nevis,None,42
+Saint Lucia,Low,29
+Saint Lucia,Moderate,22
+Saint Lucia,None,90
+Saint Lucia,Severe,3
+Saint Vincent and the Grenadines,Low,54
+Saint Vincent and the Grenadines,Moderate,9
+Saint Vincent and the Grenadines,None,12
+Saint Vincent and the Grenadines,Severe,3
+Samoa,Moderate,2
+Samoa,Severe,2
+Sao Tome & Principe,Low,28
+Sao Tome & Principe,Moderate,4
+Sao Tome & Principe,None,4
+Saudi Arabia,Low,3
+Saudi Arabia,Moderate,2
+Saudi Arabia,None,30
+Saudi Arabia,Severe,3
+Seychelles,Low,5
+Seychelles,Moderate,2
+Seychelles,Severe,10
+Singapore,Severe,2
+Solomon Islands,Low,66
+Solomon Islands,Moderate,25
+Solomon Islands,None,240
+Solomon Islands,Severe,3
+South Africa,Low,19
+South Africa,Moderate,13
+Sri Lanka,Low,4
+Sri Lanka,Moderate,3
+Sri Lanka,None,10
+Sri Lanka,Severe,5
+Sudan,Low,4
+Sudan,Moderate,2
+Sudan,None,32
+Taiwan,Low,44
+Taiwan,Moderate,7
+Taiwan,None,484
+Taiwan,Severe,1
+Tanzania,Low,24
+Tanzania,Moderate,26
+Tanzania,None,50
+Tanzania,Severe,35
+Thailand,Low,103
+Thailand,Moderate,41
+Thailand,None,288
+Thailand,Severe,54
+Tonga,Low,4
+Tonga,Severe,2
+Trinidad and Tobago,Low,54
+Trinidad and Tobago,Moderate,23
+Trinidad and Tobago,None,113
+Trinidad and Tobago,Severe,66
+Turks and Caicos,Low,23
+Turks and Caicos,Moderate,7
+Turks and Caicos,None,79
+Turks and Caicos,Severe,3
+Tuvalu,Severe,2
+United Arab Emirates,Low,21
+United Arab Emirates,Moderate,3
+United Arab Emirates,None,18
+United Arab Emirates,Severe,11
+United Kingdom,Low,22
+United Kingdom,Moderate,46
+United Kingdom,None,78
+United Kingdom,Severe,56
+United States,Low,1679
+United States,Moderate,1515
+United States,None,535
+United States,Severe,496
+Vanuatu,Low,68
+Vanuatu,Moderate,2
+Vanuatu,None,52
+Vanuatu,Severe,2
+Venezuela,Low,78
+Venezuela,Moderate,7
+Venezuela,None,11
+Venezuela,Severe,1
+Vietnam,Low,82
+Vietnam,None,382
+Vietnam,Severe,4
+Yemen,Low,6
+Yemen,None,26
