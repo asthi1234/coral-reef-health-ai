@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reef Watch — Coral Health Instrument</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAF8F3;
+    --paper:#FFFFFF;
+    --ink:#10262E;
+    --ink-dim:#5B6E73;
+    --line: rgba(16,38,46,0.10);
+    --coral:#FF6B4A;
+    --coral-ink:#B84B33;
+    --seafoam:#1E8C7F;
+    --seafoam-soft:#E6F3F0;
+    --alert:#D14A2A;
+    --alert-soft:#FBE9E4;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1000px 500px at 85% -10%, #EAF4F1 0%, transparent 60%),
+      var(--bg);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--coral); color:#fff; }
+  a{ color:var(--seafoam); }
+  .mono{ font-family:'IBM Plex Mono', monospace; letter-spacing:0.02em; }
+
+  /* ---------- Depth rail ---------- */
+  .depth-rail{
+    position:fixed; left:0; top:0; bottom:0; width:46px;
+    display:flex; flex-direction:column; align-items:center;
+    padding:100px 0; pointer-events:none; opacity:0.7;
+  }
+  .depth-rail::before{
+    content:""; position:absolute; top:100px; bottom:100px; width:1px;
+    background:linear-gradient(180deg, var(--seafoam), transparent 85%);
+  }
+  .depth-tick{ font-size:10px; color:var(--ink-dim); margin:auto 0; position:relative; padding-left:10px; font-family:'IBM Plex Mono', monospace; }
+  .depth-tick::before{ content:""; position:absolute; left:0; top:50%; width:8px; height:1px; background:var(--ink-dim); }
+  @media (max-width: 900px){ .depth-rail{ display:none; } }
+
+  /* ---------- Header ---------- */
+  header{ max-width:960px; margin:0 auto; padding:72px 32px 40px 32px; }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.18em;
+    text-transform:uppercase; color:var(--seafoam); margin:0 0 18px 0;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{
+    content:""; width:7px; height:7px; border-radius:50%; background:var(--seafoam);
+    box-shadow:0 0 0 4px var(--seafoam-soft);
+  }
+  h1{
+    font-family:'Fraunces', serif; font-weight:500; font-optical-sizing:auto;
+    font-size:clamp(40px, 6vw, 68px); line-height:1.02; letter-spacing:-0.01em;
+    margin:0 0 20px 0; color:var(--ink);
+  }
+  h1 em{ font-style:italic; color:var(--coral); font-weight:300; }
+  header p{ max-width:54ch; color:var(--ink-dim); font-size:17px; line-height:1.6; margin:0; }
+
+  .instrument-strip{
+    max-width:960px; margin:0 auto; padding:0 32px 56px 32px;
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:14px; overflow:hidden;
+  }
+  .instrument{ background:var(--paper); padding:18px 20px; }
+  .instrument .label{ font-size:11px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px; }
+  .instrument .value{ font-family:'IBM Plex Mono', monospace; font-size:22px; color:var(--seafoam); }
+  @media (max-width:640px){ .instrument-strip{ grid-template-columns:1fr; } }
+
+  /* ---------- Tabs ---------- */
+  .console{ max-width:960px; margin:0 auto; padding:0 32px 120px 32px; }
+  .tabs{
+    display:flex; gap:8px; background:var(--paper); padding:6px;
+    border-radius:14px; border:1px solid var(--line); margin-bottom:28px;
+    box-shadow:0 1px 2px rgba(16,38,46,0.04);
+  }
+  .tab{
+    flex:1; padding:14px 10px; text-align:center; border-radius:9px; cursor:pointer;
+    font-family:'IBM Plex Mono', monospace; font-size:13px; letter-spacing:0.06em;
+    color:var(--ink-dim); transition:all .2s ease; user-select:none; border:1px solid transparent;
+  }
+  .tab .tab-num{ opacity:0.5; margin-right:6px; }
+  .tab:hover{ color:var(--ink); }
+  .tab.active{ background:var(--coral); color:#fff; }
+
+  .panel{ display:none; animation:rise .35s ease; }
+  .panel.active{ display:block; }
+  @keyframes rise{ from{ opacity:0; transform:translateY(8px);} to{ opacity:1; transform:none;} }
+
+  .card{
+    background:var(--paper); border:1px solid var(--line); border-radius:16px; padding:36px;
+    box-shadow:0 1px 3px rgba(16,38,46,0.05), 0 12px 32px rgba(16,38,46,0.04);
+  }
+  .card h2{ font-family:'Fraunces', serif; font-weight:500; font-size:26px; margin:0 0 8px 0; }
+  .card > p.hint{ color:var(--ink-dim); font-size:14px; margin:0 0 28px 0; line-height:1.6; }
+
+  /* ---------- Scan ---------- */
+  .dropzone{
+    border:1.5px dashed rgba(16,38,46,0.22); border-radius:12px; background:var(--bg);
+    padding:40px 24px; text-align:center; cursor:pointer; transition:border-color .2s, background .2s;
+    position:relative; display:block;
+  }
+  .dropzone:hover, .dropzone.drag{ border-color:var(--coral); background:#FFF3EF; }
+  .dropzone input{ position:absolute; inset:0; opacity:0; cursor:pointer; }
+  .dropzone .dz-title{ font-size:15px; margin-bottom:6px; color:var(--ink); }
+  .dropzone .dz-sub{ font-size:12px; color:var(--ink-dim); font-family:'IBM Plex Mono', monospace; }
+  #imgPreview{ max-width:100%; max-height:260px; border-radius:10px; margin-top:20px; display:none; }
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    appearance:none; border:none; cursor:pointer;
+    background:var(--coral); color:#fff; font-weight:600;
+    font-family:'Inter', sans-serif; font-size:14px; padding:14px 26px; border-radius:9px;
+    margin-top:22px; transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{ transform:translateY(-1px); box-shadow:0 8px 20px rgba(255,107,74,0.28); }
+  .btn:disabled{ opacity:0.4; cursor:not-allowed; transform:none; box-shadow:none; }
+
+  /* ---------- Gauge ---------- */
+  .readout{ display:flex; gap:32px; align-items:center; margin-top:32px; flex-wrap:wrap; }
+  .gauge{
+    width:132px; height:132px; border-radius:50%; position:relative; flex-shrink:0;
+    background:conic-gradient(var(--gauge-color, var(--seafoam)) calc(var(--pct, 0) * 1%), var(--line) 0);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .gauge::before{
+    content:""; position:absolute; inset:10px; border-radius:50%; background:var(--paper);
+    border:1px solid var(--line);
+  }
+  .gauge-text{ position:relative; text-align:center; z-index:1; }
+  .gauge-text .pct{ font-family:'IBM Plex Mono', monospace; font-size:24px; color:var(--ink); display:block; }
+  .gauge-text .pct-label{ font-size:10px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:0.08em; }
+  .readout-detail .rd-label{ font-size:11px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px; }
+  .readout-detail .rd-value{ font-family:'Fraunces', serif; font-size:30px; }
+  .readout-detail .rd-value.coral{ color:var(--coral-ink); }
+  .readout-detail .rd-value.seafoam{ color:var(--seafoam); }
+  .readout-detail .rd-value.alert{ color:var(--alert); }
+
+  /* ---------- Form ---------- */
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  @media (max-width:640px){ .grid{ grid-template-columns:1fr; } }
+  .field label{
+    display:block; font-size:11px; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--ink-dim); margin-bottom:8px;
+  }
+  .field input, .field select{
+    width:100%; background:var(--bg); border:1px solid var(--line); color:var(--ink);
+    padding:12px 14px; border-radius:8px; font-family:'IBM Plex Mono', monospace; font-size:13px;
+  }
+  .field input:focus, .field select:focus{ outline:2px solid var(--coral); outline-offset:1px; }
+
+  /* ---------- Chat ---------- */
+  .chat-log{ display:flex; flex-direction:column; gap:14px; margin-bottom:20px; max-height:420px; overflow-y:auto; }
+  .msg{ max-width:80%; padding:14px 16px; border-radius:12px; font-size:14px; line-height:1.55; }
+  .msg.user{ align-self:flex-end; background:var(--coral); color:#fff; border-bottom-right-radius:3px; }
+  .msg.bot{ align-self:flex-start; background:var(--seafoam-soft); color:var(--ink); border-bottom-left-radius:3px; }
+  .msg .src{ display:block; margin-top:10px; font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--seafoam); opacity:0.9; }
+  .chat-input-row{ display:flex; gap:10px; }
+  .chat-input-row input{
+    flex:1; background:var(--bg); border:1px solid var(--line); color:var(--ink);
+    padding:14px 16px; border-radius:9px; font-family:'Inter'; font-size:14px;
+  }
+  .chat-input-row input:focus{ outline:2px solid var(--coral); outline-offset:1px; }
+
+  .status-line{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-dim); margin-top:16px; min-height:16px; }
+  .status-line.err{ color:var(--alert); }
+
+  footer{ text-align:center; padding:40px 32px 60px; color:var(--ink-dim); font-size:12px; font-family:'IBM Plex Mono', monospace; }
+</style>
+</head>
+<body>
+
+<div class="depth-rail">
+  <div class="depth-tick">0m</div>
+  <div class="depth-tick">10m</div>
+  <div class="depth-tick">20m</div>
+  <div class="depth-tick">30m</div>
+</div>
+
+<header>
+  <p class="eyebrow">Live instrument &middot; local inference</p>
+  <h1>Reef Watch<br><em>reads the reef</em> before you dive in.</h1>
+  <p>Three instruments, one reef: a visual scanner trained on bleached and healthy coral, a risk gauge built from three decades of temperature and bleaching records, and a research assistant grounded in reef science literature.</p>
+</header>
+
+<div class="instrument-strip">
+  <div class="instrument"><div class="label">Scanner accuracy</div><div class="value">75.5%</div></div>
+  <div class="instrument"><div class="label">Risk model accuracy</div><div class="value">85.8%</div></div>
+  <div class="instrument"><div class="label">Reef records ingested</div><div class="value">41,361</div></div>
+</div>
+
+<div class="console">
+  <div class="tabs">
+    <div class="tab active" data-panel="scan"><span class="tab-num">01</span>Scan</div>
+    <div class="tab" data-panel="risk"><span class="tab-num">02</span>Risk</div>
+    <div class="tab" data-panel="ask"><span class="tab-num">03</span>Ask</div>
+  </div>
+
+  <!-- SCAN -->
+  <div class="panel active" id="panel-scan">
+    <div class="card">
+      <h2>Scan a coral photo</h2>
+      <p class="hint">Drop an underwater photo of coral. The scanner (a fine-tuned MobileNetV2) reads texture and colour to flag signs of bleaching.</p>
+
+      <label class="dropzone" id="dropzone">
+        <input type="file" id="fileInput" accept="image/*">
+        <div class="dz-title">Drop a photo, or click to choose one</div>
+        <div class="dz-sub">JPG or PNG</div>
+        <img id="imgPreview" alt="preview">
+      </label>
+
+      <button class="btn" id="scanBtn" disabled>Run scan</button>
+      <div class="status-line" id="scanStatus"></div>
+
+      <div class="readout" id="scanReadout" style="display:none;">
+        <div class="gauge" id="scanGauge"><div class="gauge-text"><span class="pct" id="scanPct">--</span><span class="pct-label">confidence</span></div></div>
+        <div class="readout-detail">
+          <div class="rd-label">Reading</div>
+          <div class="rd-value" id="scanResult">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RISK -->
+  <div class="panel" id="panel-risk">
+    <div class="card">
+      <h2>Predict bleaching risk</h2>
+      <p class="hint">Enter site conditions. The risk gauge (a Random Forest trained on regional temperature-anomaly records) estimates bleaching severity before it's visible.</p>
+
+      <div class="grid">
+        <div class="field"><label>Latitude</label><input type="number" step="any" id="Latitude_Degrees" value="-18.5"></div>
+        <div class="field"><label>Longitude</label><input type="number" step="any" id="Longitude_Degrees" value="147.5"></div>
+        <div class="field"><label>Distance to shore (m)</label><input type="number" step="any" id="Distance_to_Shore" value="500"></div>
+        <div class="field"><label>Depth (m)</label><input type="number" step="any" id="Depth_m" value="5"></div>
+        <div class="field"><label>Mean temperature (K)</label><input type="number" step="any" id="Temperature_Mean" value="301.5"></div>
+        <div class="field"><label>SSTA</label><input type="number" step="any" id="SSTA" value="1.2"></div>
+        <div class="field"><label>TSA</label><input type="number" step="any" id="TSA" value="2.5"></div>
+        <div class="field"><label>Turbidity</label><input type="number" step="any" id="Turbidity" value="0.5"></div>
+        <div class="field"><label>Year</label><input type="number" id="Date_Year" value="2024"></div>
+        <div class="field"><label>Month</label><input type="number" id="Date_Month" value="3"></div>
+        <div class="field"><label>Day</label><input type="number" id="Date_Day" value="15"></div>
+        <div class="field">
+          <label>Ocean</label>
+          <select id="Ocean_Name">
+            <option>Pacific</option><option>Atlantic</option><option>Indian</option><option>Red Sea</option><option>Arabian Gulf</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Exposure</label>
+          <select id="Exposure"><option>Sheltered</option><option selected>Exposed</option><option>Sometimes</option></select>
+        </div>
+        <div class="field">
+          <label>Realm</label>
+          <select id="Realm_Name">
+            <option selected>Central Indo-Pacific</option><option>Tropical Atlantic</option>
+            <option>Western Indo-Pacific</option><option>Eastern Indo-Pacific</option>
+            <option>Temperate Australasia</option><option>Temperate Northern Pacific</option>
+          </select>
+        </div>
+        <div class="field"><label>Country</label><input type="text" id="Country_Name" value="Australia"></div>
+      </div>
+
+      <button class="btn" id="riskBtn">Run risk model</button>
+      <div class="status-line" id="riskStatus"></div>
+
+      <div class="readout" id="riskReadout" style="display:none;">
+        <div class="gauge" id="riskGauge"><div class="gauge-text"><span class="pct" id="riskPct">--</span><span class="pct-label">confidence</span></div></div>
+        <div class="readout-detail">
+          <div class="rd-label">Risk category</div>
+          <div class="rd-value" id="riskResult">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ASK -->
+  <div class="panel" id="panel-ask">
+    <div class="card">
+      <h2>Ask the reef assistant</h2>
+      <p class="hint">Grounded in five reef-science reference documents via retrieval-augmented generation. Every answer cites its source.</p>
+
+      <div class="chat-log" id="chatLog">
+        <div class="msg bot">Ask me about bleaching causes, reef ecosystems, conservation, climate impacts, or monitoring methods.</div>
+      </div>
+      <div class="chat-input-row">
+        <input type="text" id="chatInput" placeholder="What causes coral bleaching?">
+        <button class="btn" id="chatBtn">Ask</button>
+      </div>
+      <div class="status-line" id="chatStatus"></div>
+    </div>
+  </div>
+</div>
+
+<footer>REEF WATCH &middot; local instrument &middot; API at 127.0.0.1:8000</footer>
+
+<script>
+  const API_BASE = 'http://127.0.0.1:8000';
+
+  document.querySelectorAll('.tab').forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('panel-' + tab.dataset.panel).classList.add('active');
+    });
+  });
+
+  const fileInput = document.getElementById('fileInput');
+  const imgPreview = document.getElementById('imgPreview');
+  const scanBtn = document.getElementById('scanBtn');
+  let selectedFile = null;
+
+  fileInput.addEventListener('change', (e)=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    selectedFile = file;
+    imgPreview.src = URL.createObjectURL(file);
+    imgPreview.style.display = 'block';
+    scanBtn.disabled = false;
+  });
+
+  scanBtn.addEventListener('click', async ()=>{
+    if(!selectedFile) return;
+    const statusEl = document.getElementById('scanStatus');
+    statusEl.textContent = 'Reading image…'; statusEl.className='status-line';
+    scanBtn.disabled = true;
+
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+
+    try{
+      const res = await fetch(API_BASE + '/predict/image', { method:'POST', body: formData });
+      if(!res.ok) throw new Error('Request failed (' + res.status + ')');
+      const data = await res.json();
+
+      const isHealthy = data.prediction.includes('healthy');
+      document.getElementById('scanReadout').style.display = 'flex';
+      document.getElementById('scanResult').textContent = isHealthy ? 'Healthy' : 'Bleached';
+      document.getElementById('scanResult').className = 'rd-value ' + (isHealthy ? 'seafoam' : 'coral');
+      document.getElementById('scanPct').textContent = data.confidence.toFixed(1) + '%';
+      document.getElementById('scanGauge').style.setProperty('--pct', data.confidence);
+      document.getElementById('scanGauge').style.setProperty('--gauge-color', isHealthy ? 'var(--seafoam)' : 'var(--coral)');
+      statusEl.textContent = 'Scan complete.';
+    }catch(err){
+      statusEl.textContent = 'Could not reach the scanner. Is the backend running at ' + API_BASE + '?';
+      statusEl.className = 'status-line err';
+    }finally{
+      scanBtn.disabled = false;
+    }
+  });
+
+  const riskFields = ['Latitude_Degrees','Longitude_Degrees','Distance_to_Shore','Depth_m','Temperature_Mean','SSTA','TSA','Turbidity','Date_Year','Date_Month','Date_Day'];
+
+  document.getElementById('riskBtn').addEventListener('click', async ()=>{
+    const statusEl = document.getElementById('riskStatus');
+    statusEl.textContent = 'Consulting risk model…'; statusEl.className='status-line';
+
+    const payload = {};
+    riskFields.forEach(f=>{ payload[f] = parseFloat(document.getElementById(f).value); });
+    payload.Ocean_Name = document.getElementById('Ocean_Name').value;
+    payload.Exposure = document.getElementById('Exposure').value;
+    payload.Realm_Name = document.getElementById('Realm_Name').value;
+    payload.Country_Name = document.getElementById('Country_Name').value;
+
+    try{
+      const res = await fetch(API_BASE + '/predict/risk', {
+        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)
+      });
+      if(!res.ok) throw new Error('Request failed (' + res.status + ')');
+      const data = await res.json();
+
+      const colorMap = { None:'seafoam', Low:'seafoam', Moderate:'coral', Severe:'alert' };
+      const cls = colorMap[data.predicted_category] || 'seafoam';
+
+      document.getElementById('riskReadout').style.display = 'flex';
+      document.getElementById('riskResult').textContent = data.predicted_category;
+      document.getElementById('riskResult').className = 'rd-value ' + cls;
+      document.getElementById('riskPct').textContent = data.confidence.toFixed(1) + '%';
+      document.getElementById('riskGauge').style.setProperty('--pct', data.confidence);
+      document.getElementById('riskGauge').style.setProperty('--gauge-color', 'var(--' + (cls==='alert'?'alert':cls) + ')');
+      statusEl.textContent = 'Prediction complete.';
+    }catch(err){
+      statusEl.textContent = 'Could not reach the risk model. Is the backend running at ' + API_BASE + '?';
+      statusEl.className = 'status-line err';
+    }
+  });
+
+  const chatLog = document.getElementById('chatLog');
+  const chatInput = document.getElementById('chatInput');
+  const chatBtn = document.getElementById('chatBtn');
+
+  function addMessage(text, who, sources){
+    const div = document.createElement('div');
+    div.className = 'msg ' + who;
+    div.textContent = text;
+    if(sources && sources.length){
+      const src = document.createElement('span');
+      src.className = 'src';
+      src.textContent = 'Source: ' + sources.map(s=>s.split(/[\\/]/).pop()).join(', ');
+      div.appendChild(src);
+    }
+    chatLog.appendChild(div);
+    chatLog.scrollTop = chatLog.scrollHeight;
+  }
+
+  async function sendChat(){
+    const question = chatInput.value.trim();
+    if(!question) return;
+    addMessage(question, 'user');
+    chatInput.value = '';
+    chatBtn.disabled = true;
+    const statusEl = document.getElementById('chatStatus');
+    statusEl.textContent = 'Thinking… (local model, may take a moment)'; statusEl.className='status-line';
+
+    try{
+      const res = await fetch(API_BASE + '/chat', {
+        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({question})
+      });
+      if(!res.ok) throw new Error('Request failed (' + res.status + ')');
+      const data = await res.json();
+      addMessage(data.answer, 'bot', data.sources);
+      statusEl.textContent = '';
+    }catch(err){
+      addMessage('Could not reach the assistant. Is the backend running at ' + API_BASE + '?', 'bot');
+      statusEl.textContent = '';
+    }finally{
+      chatBtn.disabled = false;
+    }
+  }
+
+  chatBtn.addEventListener('click', sendChat);
+  chatInput.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') sendChat(); });
+</script>
+</body>
+</html>
