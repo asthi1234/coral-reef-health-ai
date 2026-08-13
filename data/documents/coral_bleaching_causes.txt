@@ -1,0 +1,17 @@
+Coral Bleaching: Causes and Mechanisms
+
+Coral bleaching occurs when corals expel the symbiotic algae (zooxanthellae) living in their tissues, causing them to turn white. This algae provides corals with up to 90% of their energy through photosynthesis, so its loss severely stresses the coral.
+Primary Causes:
+1. Thermal Stress: The most common cause. Sustained water temperatures just 1-2 degrees Celsius above normal summer maximums for several weeks can trigger bleaching. Scientists measure this using Degree Heating Weeks (DHW), which accumulates thermal stress over a 12-week period.
+
+2. Ocean Acidification: Increased CO2 absorption by oceans lowers pH, making it harder for corals to build calcium carbonate skeletons and increasing physiological stress.
+
+3. Pollution and Runoff: Agricultural runoff, sewage, and sedimentation reduce water quality and block sunlight needed for photosynthesis.
+
+4. Extreme Low Tides: Prolonged exposure to air during unusually low tides can cause localized bleaching.
+
+5. Overexposure to Sunlight: Combined with high temperatures, intense UV radiation can compound stress on coral tissue.
+
+Recovery: If stress is temporary and mild, corals can recover their algae within weeks to months. However, repeated or prolonged bleaching events often lead to coral death, as the coral cannot survive long without its energy source.
+
+Global Bleaching Events: Mass bleaching events have occurred in 1998, 2010, and 2014-2017 (the longest and most widespread on record), primarily driven by El Nino conditions combined with long-term ocean warming.

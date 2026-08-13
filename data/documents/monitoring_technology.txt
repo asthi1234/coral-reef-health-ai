@@ -1,0 +1,22 @@
+Coral Reef Monitoring and Technology
+
+Effective coral reef conservation depends on accurate, timely monitoring to detect bleaching events, track reef health trends, and evaluate the success of restoration efforts.
+
+Satellite-Based Monitoring:
+NOAA's Coral Reef Watch program uses satellite data to track sea surface temperatures globally, generating Degree Heating Week (DHW) values that predict bleaching risk before it visibly occurs. This allows researchers and reef managers to issue early warnings and prepare response efforts.
+
+Underwater Survey Methods:
+1. Manta Tow Surveys: Divers are towed behind boats along transect lines, visually estimating coral cover and bleaching extent across large areas quickly.
+2. Photo Quadrat Surveys: Fixed-position photographs taken at regular intervals allow scientists to track changes in specific reef locations over time with high precision.
+3. ReefCheck and Citizen Science: Trained volunteer divers conduct standardized surveys worldwide, dramatically expanding monitoring coverage beyond what professional scientists alone could achieve.
+
+Emerging Technologies:
+1. Automated Underwater Vehicles (AUVs) and Remotely Operated Vehicles (ROVs): Enable monitoring of deeper or hard-to-access reef areas without diver risk.
+2. AI and Computer Vision: Machine learning models, similar to image classification systems, can now automatically analyze underwater photographs to detect bleaching, disease, and coral cover changes at scale, dramatically speeding up analysis that once took researchers weeks.
+3. Environmental DNA (eDNA) Sampling: Analyzing water samples for genetic material allows researchers to detect species presence without direct observation, useful for monitoring biodiversity changes.
+4. Acoustic Monitoring: Healthy reefs produce distinct soundscapes from fish and invertebrate activity; changes in these acoustic signatures can indicate ecosystem health changes even before visual symptoms appear.
+
+Data Integration Challenges:
+A major challenge in reef monitoring is integrating data from multiple sources, satellite, in-water surveys, citizen science, and sensor networks, into unified systems that support decision-making. Global databases like the Global Coral Bleaching Database aggregate observations from research institutions worldwide to support large-scale analysis.
+
+Future Directions: Combining real-time environmental sensor networks with predictive machine learning models represents the next frontier in reef monitoring, potentially enabling intervention before bleaching events occur rather than only documenting damage after the fact.
